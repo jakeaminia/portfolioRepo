@@ -1,3 +1,4 @@
+# Input file is loosely formatted because it was derived from a copy-and-paste of a google doc table
 def parse_google_doc_table(doc_name: str):
     matrix = dict()
     current_node = None
@@ -18,38 +19,37 @@ def parse_google_doc_table(doc_name: str):
     return matrix
 
 
-def find_expanded_requirements(node: str, matrix: dict) -> set:
+def get_all_prerequisites(node: str, matrix: dict) -> set:
     result = set()
     if not matrix.get(node):
         return result
-    for element in matrix.get(node):
-        result.add(element)
-        for item in find_expanded_requirements(element, matrix):
-            result.add(item)
+    for prerequisite in matrix.get(node):
+        result.add(prerequisite)
+        for second_order_prerequisite in get_all_prerequisites(prerequisite, matrix):
+            result.add(second_order_prerequisite)
     return result
 
-
+# Defining "node height" as the total number of prerequisites for a given node
 def get_heights(matrix: dict):
-    new_dict = dict()
-    result = list()
-    result2 = list()
-    for key in matrix.keys():
-        # new_dict[key] = find_height(key, matrix, dict())
-        new_dict[key] = len(find_expanded_requirements(key, matrix))
-    while new_dict:
-        lowest_node = min(new_dict, key=new_dict.get)
-        node_height = new_dict.pop(lowest_node)
-        result.append(lowest_node)
-        result2.append(node_height)
-    return result, result2
+    node_heights_dict = dict()
+    sorted_nodes = list()
+    sorted_nodes_heights = list()
+    for node in matrix.keys():
+        node_heights_dict[node] = len(get_all_prerequisites(node, matrix))
+    while node_heights_dict:
+        min_node = min(node_heights_dict, key=node_heights_dict.get)
+        min_node_height = node_heights_dict.pop(min_node)
+        sorted_nodes.append(min_node)
+        sorted_nodes_heights.append(min_node_height)
+    return sorted_nodes, sorted_nodes_heights
 
 
 def print_matrix(matrix: dict):
     with open('result_doc.txt', 'w') as result_doc:
-        arr, arr2 = get_heights(matrix)
+        nodes, node_heights = get_heights(matrix)
         requisite_map = dict()
-        for i, value in enumerate(arr):
-            num_prerequisites = arr2[i]
+        for i, value in enumerate(nodes):
+            num_prerequisites = node_heights[i]
             if num_prerequisites not in requisite_map:
                 requisite_map[num_prerequisites] = list()
             requisite_map[num_prerequisites].append((value, matrix.get(value)))
