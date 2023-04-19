@@ -1,5 +1,5 @@
-class node:
-    def __init__(self, name, prerequisites):
+class TreeNode:
+    def __init__(self, name: str, prerequisites=None):
         self._name = name
         self._direct_prerequisites = set(prerequisites)
         self._extended_prerequisites = set()
@@ -7,7 +7,7 @@ class node:
         self._count_direct_prerequisites = None
 
     def add_direct_prerequisite(self, prerequisite):
-        self._direct_prerequisites.append(prerequisite)
+        self._direct_prerequisites.append(TreeNode(prerequisite))
 
     def get_direct_prerequisites(self):
         return self._direct_prerequisites
@@ -25,11 +25,12 @@ class node:
         return self._height
 
     def set_height(self):
-        print('re-calculate extended prerequisites')
-        print('re-calculate height')
+        # print('re-calculate extended prerequisites')
+        # print('re-calculate height')
         for prerequisite in self._direct_prerequisites:
             self._extended_prerequisites.add(prerequisite)
-            prerequisite.set
+            prerequisite.set_height()
+        self._height = len(self._extended_prerequisites)
 
     def set_count_direct_prerequisites(self):
         self._count_direct_prerequisites = len(self._direct_prerequisites)
@@ -95,7 +96,7 @@ def get_heights(matrix: dict):
 
 
 def print_matrix(matrix: dict):
-    with open('result_doc.txt', 'w') as result_doc:
+    with open('ParkourClubProjects/result_doc.txt', 'w') as result_doc:
         sorted_nodes, sorted_nodes_heights = get_heights(matrix)
         # node_height_levels maps height numbers to a list of (node, [node prerequisites]) for nodes of that height in sorted_nodes
         node_height_levels = dict()
@@ -119,7 +120,7 @@ def print_matrix(matrix: dict):
 
             result_doc.write('\n')
 
-
-FILE_NAME = 'table_doc.txt'
+SOURCE_FILE = 'ParkourClubProjects'
+FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
 adjacency_matrix = parse_google_doc_table(FILE_NAME)
 print_matrix(adjacency_matrix)
