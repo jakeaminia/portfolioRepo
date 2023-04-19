@@ -1,13 +1,31 @@
-class TreeNode:
-    def __init__(self, name: str, prerequisites=None):
+class DAG:
+    def __init__(self, name: str):
+        self._node_dict = dict()
         self._name = name
-        self._direct_prerequisites = set(prerequisites)
+    def add(self, node: DAGNode):
+        self._node_dict[node.get_name()] = node
+    def get(self, node: str) -> DAGNode:
+        return self._node_dict.get(node, None)
+
+
+class DAGNode:
+    def __init__(self, name: str):
+        self._name = name
+        self._direct_prerequisites = set()
         self._extended_prerequisites = set()
         self._height = None
         self._count_direct_prerequisites = None
 
+    def set_direct_prerequisites_from_string_list(self, prerequisites: list, parent_DAG: DAG):
+        for prerequisite in prerequisites:
+            if not parent_DAG.get(prerequisite):
+                parent_DAG.add(DAGNode(prerequisite))
+            self._direct_prerequisites.add(parent_DAG.get(prerequisite))
+            self.set_count_direct_prerequisites()
+
     def add_direct_prerequisite(self, prerequisite):
-        self._direct_prerequisites.append(TreeNode(prerequisite))
+        self._direct_prerequisites.append(DAGNode(prerequisite))
+        self.set_count_direct_prerequisites()
 
     def get_direct_prerequisites(self):
         return self._direct_prerequisites
@@ -15,8 +33,12 @@ class TreeNode:
     def get_extended_prerequisites(self):
         return self._extended_prerequisites
 
-    def set_name(self, new_name):
-        self._name = new_name
+    # def set_name(self, new_name, node_dictionary: dict=None):
+    #     old_name = self._name
+    #     self._name = new_name
+    #     if node_dictionary is not None:
+    #         del(node_dictionary[old_name])
+    #         node_dictionary[new_name] = self
 
     def get_name(self):
         return self._name
@@ -41,10 +63,36 @@ class TreeNode:
     def __str__(self):
         formatted_direct_prerequisites = ''
         for index, prerequisite in enumerate(self._direct_prerequisites):
-            formatted_direct_prerequisites += f'{prerequisite}'
-            if index < self._count_direct_prerequisites:
+            formatted_direct_prerequisites += f'{prerequisite.get_name()}'
+            self.set_count_direct_prerequisites()
+            if index < self._count_direct_prerequisites - 1:
                 formatted_direct_prerequisites += ', '
         result = f'{self._name} ({formatted_direct_prerequisites})'
+        return result
+
+
+# Input file is loosely formatted because it was derived from a copy-and-paste of a google doc table
+def parse_google_doc_table_to_class(doc_name: str) -> DAG:
+    dag = DAG('dag')
+    # node_dictionary = dict()
+    current_node_name = None
+    adjacent_node_names = list()
+    with open(doc_name, 'r') as doc_file:
+        for line in doc_file:
+            if not line.strip():
+                if current_node_name and not adjacent_node_names:
+                    dag.add(DAGNode(current_node_name))
+                current_node_name = None
+                adjacent_node_names = list()
+                continue
+            if not current_node_name:
+                current_node_name = line.strip()
+                continue
+            adjacent_node_names.extend(line.strip().split(', '))
+            if not dag.get(current_node_name):
+                dag.add(DAGNode(current_node_name))
+            dag.get(current_node_name).set_direct_prerequisites_from_string_list(adjacent_node_names, dag)
+    return dag
 
 
 # Input file is loosely formatted because it was derived from a copy-and-paste of a google doc table
@@ -122,5 +170,9 @@ def print_matrix(matrix: dict):
 
 SOURCE_FILE = 'ParkourClubProjects'
 FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
-adjacency_matrix = parse_google_doc_table(FILE_NAME)
-print_matrix(adjacency_matrix)
+# adjacency_matrix = parse_google_doc_table(FILE_NAME)
+# print_matrix(adjacency_matrix)
+node_dict = parse_google_doc_table_to_class(FILE_NAME)
+for node_name, node_object in node_dict.items():
+    node_object.set_height()
+    print(node_object)
