@@ -2,9 +2,9 @@ class DAG:
     def __init__(self, name: str):
         self._node_dict = dict()
         self._name = name
-    def add(self, node: DAGNode):
+    def add(self, node):
         self._node_dict[node.get_name()] = node
-    def get(self, node: str) -> DAGNode:
+    def get(self, node: str):
         return self._node_dict.get(node, None)
 
 
@@ -170,9 +170,9 @@ def print_matrix(matrix: dict):
 
 SOURCE_FILE = 'ParkourClubProjects'
 FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
-# adjacency_matrix = parse_google_doc_table(FILE_NAME)
-# print_matrix(adjacency_matrix)
-node_dict = parse_google_doc_table_to_class(FILE_NAME)
-for node_name, node_object in node_dict.items():
-    node_object.set_height()
-    print(node_object)
+adjacency_matrix = parse_google_doc_table(FILE_NAME)
+print_matrix(adjacency_matrix)
+# node_dict = parse_google_doc_table_to_class(FILE_NAME)
+# for node_name, node_object in node_dict.items():
+#     node_object.set_height()
+#     print(node_object)
