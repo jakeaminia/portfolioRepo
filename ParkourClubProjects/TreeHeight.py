@@ -1,11 +1,31 @@
+from operator import methodcaller
+
 class DAG:
     def __init__(self, name: str):
         self._node_dict = dict()
         self._name = name
+        self._sorted_nodes = list()
     def add(self, node):
         self._node_dict[node.get_name()] = node
     def get(self, node: str):
         return self._node_dict.get(node, None)
+    def get_node_dict(self):
+        return self._node_dict
+    def set_sorted_nodes(self):
+        result = list()
+        for node in self._node_dict.values():
+            node.set_height()
+            result.append(node)
+        self._sorted_nodes = sorted(result, key=methodcaller('get_height'), reverse=False)
+    def get_sorted_nodes(self):
+        return self._sorted_nodes
+    def __str__(self) -> str:
+        result = ''
+        for node in self.get_sorted_nodes():
+            result += f'\t{node}\n'
+        if not result:
+            return f'{self._name}:\n' + '\tNo Sorted Nodes'
+        return f'{self._name}:\n' + result
 
 
 class DAGNode:
@@ -52,6 +72,7 @@ class DAGNode:
         for prerequisite in self._direct_prerequisites:
             self._extended_prerequisites.add(prerequisite)
             prerequisite.set_height()
+            self._extended_prerequisites = self._extended_prerequisites | prerequisite.get_extended_prerequisites()
         self._height = len(self._extended_prerequisites)
 
     def set_count_direct_prerequisites(self):
@@ -67,7 +88,7 @@ class DAGNode:
             self.set_count_direct_prerequisites()
             if index < self._count_direct_prerequisites - 1:
                 formatted_direct_prerequisites += ', '
-        result = f'{self._name} ({formatted_direct_prerequisites})'
+        result = f'{self._name} [{self._height}] ({formatted_direct_prerequisites})'
         return result
 
 
@@ -92,6 +113,7 @@ def parse_google_doc_table_to_class(doc_name: str) -> DAG:
             if not dag.get(current_node_name):
                 dag.add(DAGNode(current_node_name))
             dag.get(current_node_name).set_direct_prerequisites_from_string_list(adjacent_node_names, dag)
+    dag.set_sorted_nodes()
     return dag
 
 
@@ -168,11 +190,20 @@ def print_matrix(matrix: dict):
 
             result_doc.write('\n')
 
-SOURCE_FILE = 'ParkourClubProjects'
-FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
-adjacency_matrix = parse_google_doc_table(FILE_NAME)
-print_matrix(adjacency_matrix)
-# node_dict = parse_google_doc_table_to_class(FILE_NAME)
-# for node_name, node_object in node_dict.items():
-#     node_object.set_height()
-#     print(node_object)
+
+def no_dag_unit_test():
+    SOURCE_FILE = 'ParkourClubProjects'
+    FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
+    adjacency_matrix = parse_google_doc_table(FILE_NAME)
+    print_matrix(adjacency_matrix)
+
+
+def yes_dag_unit_test():
+    SOURCE_FILE = 'ParkourClubProjects'
+    FILE_NAME = f'{SOURCE_FILE}/table_doc.txt'
+    test_dag = parse_google_doc_table_to_class(FILE_NAME)
+    # test_dag.set_sorted_nodes() 
+    print(test_dag)
+
+
+yes_dag_unit_test()
