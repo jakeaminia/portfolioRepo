@@ -1,0 +1,106 @@
+Level 0:
+
+	Jump 360 (None)
+	Falling (None)
+	Kick Up (None)
+	Cartwheel (None)
+	Front Roll (None)
+	Back Roll (None)
+	Kong Hop (None)
+	Handstand (None)
+	Safety Vault (None)
+	Horizontal Wall Run (None)
+	Vertical Wall Run (None)
+	Dips (None)
+	Pull Ups (None)
+	Push Ups (None)
+	Box Jump (None)
+
+Level 1:
+
+	Tucked Flagpole (Pull Ups)
+	Jump 540 (Jump 360)
+	Tornado Kick (Jump 360)
+	Half Vault (Safety Vault)
+	Tucked Elbow Lever (Dips)
+	Tucked L-Sit (Dips)
+
+Level 2:
+
+	Jump 720 (Jump 540)
+	Macaco (Back Roll, Cartwheel)
+	Roundoff (Handstand, Cartwheel)
+	Flagpole (Tucked Flagpole)
+	Speed Vault (Half Vault)
+	Turn Vault (Half Vault)
+	Elbow Lever (Tucked Elbow Lever)
+	Straddle L-Sit (Tucked L-Sit)
+
+Level 3:
+
+	Gumbi (Cartwheel, Macaco)
+	Front handspring (Roundoff)
+	Butterfly Kick (Roundoff)
+	Scoot (Roundoff)
+	Dive Roll (Roundoff)
+	Aerial (Roundoff)
+	Palm Spin (Turn Vault)
+	Lazy Vault (Turn Vault)
+	L-Sit (Straddle L-Sit)
+
+Level 4:
+
+	TD Raiz (Gumbi)
+	Front Flip (Roundoff, Box Jump)
+	Kong Vault (Speed Vault, Kong Hop)
+	360 Vault (Palm Spin)
+
+Level 5:
+
+	Raiz (TD Raiz)
+	Side Flip (Aerial, Box Jump)
+	Back handspring (Roundoff, Macaco)
+	B Twist (Butterfly Kick, Jump 360)
+	180 Dive Roll (Dive Roll, Jump 360)
+	Dash Vault (Kong Vault)
+
+Level 6:
+
+	Webster (Front Flip, Aerial)
+	Cart Side (Side Flip)
+	540 Kick (Tornado Kick, Roundoff, Jump 540)
+	Backflip (Macaco, Box Jump, Back Roll, Roundoff)
+	Kash Vault (Dash Vault)
+
+Level 7:
+
+	Roundoff Backflip (Roundoff, Backflip)
+	Gainer (Backflip)
+
+Level 8:
+
+	Arabian (Front Flip, Backflip)
+	Layout (Backflip, Back handspring)
+	Wall Flip (Backflip, vertical wall run)
+
+Level 9:
+
+	Whip (Layout)
+	A Twist (Side Flip, B Twist)
+
+Level 10:
+
+	Wall Spin (Side Flip, Palm Spin)
+
+Level 11:
+
+	Standing Full (Backflip, 540 Kick)
+
+Level 12:
+
+	Corkscrew (Standing Full, Gainer)
+
+Level 13:
+
+	Cart Full (Cart Side, Standing Full, Front Flip)
+
