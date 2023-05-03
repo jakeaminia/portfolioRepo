@@ -49,19 +49,18 @@ class Board:
 
         self.update()
 
-    def move_piece(self, color: str, piece_name: str, destination: str):
+    def move_piece(self, color: str, origin: str, destination: str):
         piece_moved_successfully: bool | str = False
         piece_position: str = ''
         piece_at_destination: Piece | None = self.get_piece_at(destination)
-        piece: Piece | None = self._pieces.get(
-            f'{color.lower()[0]}{piece_name}')
+        piece_at_origin: Piece | None = self.get_piece_at(origin)
+        # piece: Piece | None = self._pieces.get(
+        #     f'{color.lower()[0]}{origin}')
 
-        if isinstance(piece, Piece):
-            piece_position = piece.get_position()
-            piece_moved_successfully = piece.move(destination)
+        if isinstance(piece_at_origin, Piece):
+            piece_position = piece_at_origin.get_position()
+            piece_moved_successfully = piece_at_origin.move(destination)
             print(piece_moved_successfully)
-
-        print(piece)
 
         if piece_moved_successfully == 'castle':
             self.update(piece_position, destination)
@@ -75,7 +74,7 @@ class Board:
             return True
 
         else:
-            print(f'\ninvalid move: {piece_name, destination}\n')
+            print(f'\ninvalid move: {origin, destination}\n')
             return False
 
     def show_board(self):

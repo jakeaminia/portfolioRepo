@@ -26,14 +26,17 @@ class Game:
                 move_choice = input(
                     f'{self.turn_of_color}\'s move: ').strip()
 
-                if len(move_choice) == 2:
-                    move_choice = f'p{get_file_index(move_choice[0]) + 1} {move_choice}'
+                # allows short-hand for moving pawns
+                # if len(move_choice) == 2:
+                #     move_choice = f'p{get_file_index(move_choice[0]) + 1} {move_choice}'
 
                 move_choice = move_choice.split(' ')
+                origin: str = move_choice[0]
+                destination: str = move_choice[1]
 
                 try:
                     valid_move = self.board.move_piece(
-                        self.turn_of_color, move_choice[0], move_choice[1])
+                        self.turn_of_color, origin, destination)
 
                 except Exception as _:
                     valid_move = False
@@ -41,24 +44,5 @@ class Game:
             self.next_turn()
 
 
-# my_board = Board()
-# # my_board.show_board()
-# my_board.move_piece('white', 'p5', 'e4')
-# my_board.move_piece('black', 'p5', 'e5')
-# my_board.move_piece('white', 'N1', 'c3')
-# my_board.move_piece('white', 'p2', 'b4')
-# my_board.move_piece('black', 'B2', 'd6')
-# # my_board.move_piece('white', 'R1', 'b1')
-# my_board.move_piece('black', 'Q', 'f6')
-# my_board.move_piece('black', 'Q', 'f4')
-# my_board.move_piece('black', 'Q', 'e3')
-# my_board.move_piece('white', 'B1', 'a3')
-# my_board.move_piece('white', 'Q', 'e2')
-# my_board.move_piece('white', 'N2', 'f3')
-# my_board.move_piece('white', 'p7', 'g3')
-# my_board.move_piece('white', 'B2', 'g2')
-# my_board.move_piece('white', 'K', 'h1')
-#
-# my_board.show_board()
 new_game = Game()
 new_game.run_game_loop()
