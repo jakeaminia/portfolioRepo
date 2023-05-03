@@ -44,6 +44,12 @@ class Piece:
     def get_color(self) -> str:
         return self._color
 
+    def get_king_position(self, color: str) -> str | None:
+        piece: Piece | None = self.board.get_piece_object(
+            f'{color.lower()[0]}K')
+        if piece:
+            return piece.get_position()
+
     def move(self, destination: str) -> bool:
         if self.is_valid_move(destination):
             self._position = destination
@@ -54,6 +60,9 @@ class Piece:
     def move_off_board(self) -> None:
         self._position = 'captured'
 
+    # def causes_check(self, moving_piece: 'Piece' | None = None, moving_piece_destination: str = '') -> bool:
+    #     return True
+
     def is_valid_move(self, destination: str) -> bool:
         destination_file: str = destination[0]
         destination_rank: int = int(destination[1])
@@ -63,8 +72,16 @@ class Piece:
 
         piece_at_destination: Piece | None = self.board.get_piece_at(
             destination)
+
         if isinstance(piece_at_destination, Piece) and piece_at_destination.get_color() == self.get_color():
             return False
+
+        # king_position: str | None = self.get_king_position(self.get_color())
+
+        # if not isinstance(self, King) and king_position:
+        #     for piece in self.board._pieces.values():
+        #         if piece.get_color() != self.get_color() and piece.is_valid_move(king_position):
+        #             return False
 
         return True
 

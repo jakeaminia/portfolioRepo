@@ -26,10 +26,6 @@ class Game:
                 move_choice = input(
                     f'{self.turn_of_color}\'s move: ').strip()
 
-                # allows short-hand for moving pawns
-                # if len(move_choice) == 2:
-                #     move_choice = f'p{get_file_index(move_choice[0]) + 1} {move_choice}'
-
                 move_choice = move_choice.split(' ')
                 origin: str = move_choice[0]
                 destination: str = move_choice[1]

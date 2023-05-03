@@ -54,13 +54,12 @@ class Board:
         piece_position: str = ''
         piece_at_destination: Piece | None = self.get_piece_at(destination)
         piece_at_origin: Piece | None = self.get_piece_at(origin)
-        # piece: Piece | None = self._pieces.get(
-        #     f'{color.lower()[0]}{origin}')
 
         if isinstance(piece_at_origin, Piece):
+            if piece_at_origin.get_color() != color:
+                return False
             piece_position = piece_at_origin.get_position()
             piece_moved_successfully = piece_at_origin.move(destination)
-            print(piece_moved_successfully)
 
         if piece_moved_successfully == 'castle':
             self.update(piece_position, destination)
@@ -78,7 +77,6 @@ class Board:
             return False
 
     def show_board(self):
-        # print('\n= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('white', True), self.get_score('black'), '\n')
         white_captures: str = self.get_capture_names('white')
         black_score: int = self.get_score('black')
         black_captures: str = self.get_capture_names('black')
@@ -92,7 +90,6 @@ class Board:
                 else:
                     print(self._squares[f'{ch}{8 - i}'], '    ', end='')
             print('\n')
-        # print('= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('black', True), self.get_score('white'), '\n')
         print(
             f'\n= = = = = = = = = = = = = = = = = = = = = =\n{black_captures} [{white_score}]\n')
 
