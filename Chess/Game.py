@@ -1,44 +1,44 @@
 from Board import Board
-# import tkinter as tk
+from Piece import get_file_index
 
 
 class Game:
-    def __init__(self):
+    def __init__(self) -> None:
         self.board = Board()
         self.check_mate = False
-        self.turn_of_color = 'w'
+        self.turn_of_color = 'White'
+        self.next_turn_of_color = 'Black'
         self.current_move = 1
 
-    def run_game_loop(self):
-        while not self.board.check_mate():
+    def next_turn(self) -> None:
+        self.turn_of_color, self.next_turn_of_color = self.next_turn_of_color, self.turn_of_color
+        self.current_move = self.current_move + 1
+
+    def run_game_loop(self) -> None:
+
+        while not self.board.is_check_mate():
+
             self.board.show_board()
-            if self.turn_of_color == 'w':
-                valid_move = False
-                while not valid_move:
-                    white_move = input('White\'s move: ')
-                    if len(white_move) == 2:
-                        white_move = f'p{self.board.get_files().index(white_move[0]) + 1} {white_move}'
-                    white_move = white_move.split(' ')
-                    try:
-                        valid_move = self.board.move_piece(
-                            'white', white_move[0], white_move[1])
-                    except Exception as e:
-                        valid_move = False
-                self.turn_of_color = 'b'
-            elif self.turn_of_color == 'b':
-                valid_move = False
-                while not valid_move:
-                    black_move = input('Black\'s move: ')
-                    if len(black_move) == 2:
-                        black_move = f'p{self.board.get_files().index(black_move[0]) + 1} {black_move}'
-                    black_move = black_move.split(' ')
-                    try:
-                        valid_move = self.board.move_piece(
-                            'black', black_move[0], black_move[1])
-                    except Exception as e:
-                        valid_move = False
-                self.turn_of_color = 'w'
-                self.current_move += 1
+            valid_move: bool = False
+
+            while not valid_move:
+
+                move_choice = input(
+                    f'{self.turn_of_color}\'s move: ').strip()
+
+                if len(move_choice) == 2:
+                    move_choice = f'p{get_file_index(move_choice[0]) + 1} {move_choice}'
+
+                move_choice = move_choice.split(' ')
+
+                try:
+                    valid_move = self.board.move_piece(
+                        self.turn_of_color, move_choice[0], move_choice[1])
+
+                except Exception as _:
+                    valid_move = False
+
+                self.next_turn()
 
 
 # my_board = Board()
@@ -60,6 +60,5 @@ class Game:
 # my_board.move_piece('white', 'K', 'h1')
 #
 # my_board.show_board()
-
 new_game = Game()
 new_game.run_game_loop()
