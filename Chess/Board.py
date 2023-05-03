@@ -1,7 +1,8 @@
-from Piece import Piece, Pawn, Knight, Bishop, Rook, Queen, King
+from Piece import Piece, King, Queen, Rook, Bishop, Knight, Pawn
 
 
 class Board:
+
     def __init__(self) -> None:
         self.white_captures = dict()
         self.black_captures = dict()
@@ -58,6 +59,9 @@ class Board:
         if isinstance(piece, Piece):
             piece_position = piece.get_position()
             piece_moved_successfully = piece.move(destination)
+            print(piece_moved_successfully)
+
+        print(piece)
 
         if piece_moved_successfully == 'castle':
             self.update(piece_position, destination)
@@ -75,8 +79,13 @@ class Board:
             return False
 
     def show_board(self):
-        print('\n= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('white', True),
-              self.get_score('black'), '\n')
+        # print('\n= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('white', True), self.get_score('black'), '\n')
+        white_captures: str = self.get_capture_names('white')
+        black_score: int = self.get_score('black')
+        black_captures: str = self.get_capture_names('black')
+        white_score: int = self.get_score('white')
+        print(
+            f'\n{white_captures} [{black_score}]\n= = = = = = = = = = = = = = = = = = = = = =\n')
         for i in range(8):
             for ch in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']:
                 if self._squares[f'{ch}{8 - i}'] is None:
@@ -84,8 +93,9 @@ class Board:
                 else:
                     print(self._squares[f'{ch}{8 - i}'], '    ', end='')
             print('\n')
-        print('= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('black', True),
-              self.get_score('white'), '\n')
+        # print('= = = = = = = = = = = = = = = = = = = = = =', self.list_captures('black', True), self.get_score('white'), '\n')
+        print(
+            f'\n= = = = = = = = = = = = = = = = = = = = = =\n{black_captures} [{white_score}]\n')
 
     def update(self, *clear_positions: str):
         for piece in self._pieces.values():
@@ -108,6 +118,7 @@ class Board:
         return self._is_check_mate
 
     def list_captures(self, color: str, sort: bool) -> list[Piece]:
+        from Piece import Piece
         result_list: list[Piece] = list()
 
         for piece in self._captures.values():
@@ -119,5 +130,16 @@ class Board:
 
         return result_list
 
+    def get_capture_names(self, color: str) -> str:
+        result: str = ''
+        for piece in self.list_captures(color, True):
+            result += piece.__str__() + ' '
+        return result.strip()
+
     def get_score(self, color: str) -> int:
-        return sum(piece.get_value() for piece in self.list_captures(color, False))
+        other_color = ''
+        if color == 'white':
+            other_color = 'black'
+        else:
+            other_color = 'white'
+        return sum(piece.get_value() for piece in self.list_captures(other_color, False))

@@ -38,7 +38,7 @@ class Game:
                 except Exception as _:
                     valid_move = False
 
-                self.next_turn()
+            self.next_turn()
 
 
 # my_board = Board()

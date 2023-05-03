@@ -1,4 +1,6 @@
-from Board import Board
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from Board import Board
 
 
 def get_file_index(file: str) -> int:
@@ -19,11 +21,11 @@ def decrement_file(file: str) -> str:
 
 
 class Piece:
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         self._value: int = val
         self._start_position: str = position
         self._position: str = self._start_position
-        self.board: Board = board
+        self.board: 'Board' = board
         self._color: str = color
         self.has_moved: bool = False
 
@@ -136,7 +138,7 @@ class Piece:
 
 
 class King(Piece):  # TODO: Still need to add restrictions on check
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
         self._has_moved: bool = False
 
@@ -232,7 +234,7 @@ class King(Piece):  # TODO: Still need to add restrictions on check
 
 
 class Queen(Piece):
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
 
     def move(self, destination: str) -> bool:
@@ -253,7 +255,7 @@ class Queen(Piece):
 
 
 class Rook(Piece):
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
 
     def move(self, destination: str) -> bool:
@@ -274,7 +276,7 @@ class Rook(Piece):
 
 
 class Bishop(Piece):
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
 
     def move(self, destination: str) -> bool:
@@ -295,7 +297,7 @@ class Bishop(Piece):
 
 
 class Knight(Piece):
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
 
     def move(self, destination: str) -> bool:
@@ -329,7 +331,7 @@ class Knight(Piece):
 
 
 class Pawn(Piece):  # TODO: Still need to add "En Passant" functionality
-    def __init__(self, val: int, position: str, color: str, board: Board) -> None:
+    def __init__(self, val: int, position: str, color: str, board: 'Board') -> None:
         super().__init__(val, position, color, board)
 
     def move(self, destination: str) -> bool:
@@ -350,21 +352,26 @@ class Pawn(Piece):  # TODO: Still need to add "En Passant" functionality
         piece_at_destination = self.board.get_piece_at(destination)
 
         if not super(Pawn, self).is_valid_move(destination):
+            print('invalid piece move altogether')
             return False
 
         if file_distance > 1:
+            print('can\'t move that far pal (file)!')
             return False
 
         if (destination_rank > origin_rank and self.get_color() == 'black') or (
                 destination_rank < origin_rank and self.get_color() == 'white'):
+            print('can\'t move backwards pal!')
             return False
 
         if (rank_distance != 1 and self.has_moved) or rank_distance not in [1, 2]:
+            print('can\'t move that far pal (rank)!')
             return False
 
         no_opponent_piece_at_destination: bool = not piece_at_destination or piece_at_destination.get_color() == self.get_color()
 
         if file_distance == 1 and no_opponent_piece_at_destination:
+            print('no opponent at destination')
             return False
 
         return True
