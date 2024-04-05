@@ -1,7 +1,0 @@
-Audio Essay;Folk;05/04/2023(08:30);05/07/2023(23:59);do everything;5
-Course Reflection;Folk;05/11/2023(08:30);05/12/2023(23:59);probably don't need to try hard;5
-HW 13;CS;05/01/2023(18:33);05/04/2023(23:59);BS it;5
-JS Exam 2;JS;05/01/2023(18:33);05/04/2023(09:30);Finish study guide and review questions.;5
-Kin Exam 3;Kin;05/03/2023(08:30);05/10/2023(23:59);study;6
-OPEN BOOK FINAL;CS;05/02/2023(08:30);05/09/2023(23:59);open book;6
-Presentation;JS;05/01/2023(18:33);05/07/2023(23:59);touch up edits;2
